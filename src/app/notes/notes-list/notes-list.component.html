@@ -1,0 +1,14 @@
+<h1>인생 깨달음(들)</h1>
+<p>적으세요</p>
+
+<input [(ngModel)]="content" placeholder="Add your own note" class="input">
+<textarea [(ngModel)]="description" placeholder="Add your own Description" class="textarea"></textarea>
+<input [(ngModel)]="tag" placeholder="Add your own tag" class="input">
+
+<button class="button is-success" (click)="createNote()" [disabled]="content?.length < 2 || content?.length > 200">
+	Add Note
+</button>
+<hr>
+<div *ngFor="let note of notes | async">
+	<note-detail [note]="note"></note-detail>
+</div>

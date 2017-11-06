@@ -1,0 +1,36 @@
+<nav class="nav">
+  <div class="nav-left">
+    <a class="nav-item logo" routerLink="/">
+      <img src="assets/images/angularfirebase.png" width="30px" alt="Firestarter Angular4 Demo App"/> FireStarter
+    </a>
+  </div>
+
+  <!-- This "nav-toggle" hamburger menu is only visible on mobile -->
+  <!-- You need JavaScript to toggle the "is-active" class on "nav-menu" -->
+  <span class="nav-toggle" (click)="toggleCollapse()" [ngClass]="{'is-active': show}">
+    <span></span>
+  <span></span>
+  <span></span>
+  </span>
+
+  <!-- This "nav-menu" is hidden on mobile -->
+  <!-- Add the modifier "is-active" to display it on mobile -->
+  <div class="nav-right nav-menu" [ngClass]="{'is-active': show}">
+    <a class="nav-item" routerLink="/login">
+      Login
+    </a>
+    <a class="nav-item" routerLink="/notes">
+      인생 깨달음(들)
+    </a>
+    <a class="nav-item" routerLink="/my-notes">
+      내 인깨 모아보기
+    </a>
+    <!--     <a class="nav-item" routerLink="/items">
+      Realtime DB
+    </a>
+    <a class="nav-item" routerLink="/uploads">
+      File Uploads
+    </a> -->
+  </div>
+
+</nav>

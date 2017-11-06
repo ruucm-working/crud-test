@@ -1,0 +1,6 @@
+<h1>내 인깨 모아보기</h1>
+
+<hr>
+<div *ngFor="let note of notes | async">
+	<note-detail [note]="note"></note-detail>
+</div>
