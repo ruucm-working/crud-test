@@ -1,14 +1,20 @@
 <h1>인생 깨달음(들)</h1>
 <p>적으세요</p>
 
-<input [(ngModel)]="content" placeholder="Add your own note" class="input">
-<textarea [(ngModel)]="description" placeholder="Add your own Description" class="textarea"></textarea>
-<input [(ngModel)]="tag" placeholder="Add your own tag" class="input">
+<input [(ngModel)]="content" placeholder="인깨 제목" class="input">
+<textarea [(ngModel)]="description" placeholder="인깨에대한 설명" class="textarea"></textarea>
+
+<tag-input [ngModel]="tags" (onAdd)="add_tag($event)" (onRemove)="remove_tag($event)" [maxItems]='4' [secondaryPlaceholder]="'태그'">
+	<tag-input-dropdown [showDropdownIfEmpty]="true" [autocompleteItems]="autocompleteItemsAsObjects">
+	</tag-input-dropdown>
+</tag-input>
 
 <button class="button is-success" (click)="createNote()" [disabled]="content?.length < 2 || content?.length > 200">
-	Add Note
+	인깨 저장
 </button>
 <hr>
-<div *ngFor="let note of notes | async">
-	<note-detail [note]="note"></note-detail>
+<div class="box" *ngFor="let note of notes | async">
+	<h3>{{ note.content }}</h3>
+	<p>{{ note.description }}</p>
+	<a class="tag is-info" *ngFor="let item of note.tag" [routerLink]="['/notes/filtered/', item]">{{ item }}</a>
 </div>
