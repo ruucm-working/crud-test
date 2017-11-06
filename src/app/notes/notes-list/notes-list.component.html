@@ -1,5 +1,5 @@
-<h1>인생 깨달음(들)</h1>
-<p>적으세요</p>
+<h1>인생의 작은 깨달음(들)</h1>
+<p>여태껏 살면서 깨달았었던 나만의 소중한 지혜를 적어주세요 :)</p>
 
 <input [(ngModel)]="content" placeholder="인깨 제목" class="input">
 <textarea [(ngModel)]="description" placeholder="인깨에대한 설명" class="textarea"></textarea>
@@ -10,11 +10,12 @@
 </tag-input>
 
 <button class="button is-success" (click)="createNote()" [disabled]="content?.length < 2 || content?.length > 200">
-	인깨 저장
+	발행
 </button>
 <hr>
 <div class="box" *ngFor="let note of notes | async">
 	<h3>{{ note.content }}</h3>
 	<p>{{ note.description }}</p>
-	<a class="tag is-info" *ngFor="let item of note.tag" [routerLink]="['/notes/filtered/', item]">{{ item }}</a>
+	<a class="tag is-info" *ngFor="let item of note.tag | keys" [routerLink]="['/notes/filtered/', item]">{{ item }}</a>
+	<a class="author" [routerLink]="['/notes/user/', note.userName]">by {{ note.userName }}.</a>
 </div>

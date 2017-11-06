@@ -1,11 +1,16 @@
 <div class="box">
-	<h3>{{ note.content }}</h3>
-	<p>{{ note.description }}</p>
+	<div>
+		<h3>{{ note.content }}</h3>
+		<p>{{ note.description }}</p>
 
-	<!--     <span class="button is-small is-info" (click)='addHeartToNote(note.hearts)'>
+		<!--     <span class="button is-small is-info" (click)='addHeartToNote(note.hearts)'>
       Heart <i class="fa fa-heart"></i>
     </span> -->
-	<span class="button is-small is-danger" (click)='deleteNote(note.id)'>Delete</span>
+
+		<span class="tag is-info" *ngFor="let item of note.tag | keys">{{ item }}</span>
+	</div>
+
+	<span class="button is-small is-danger" (click)='deleteNote(note.id)'>삭제</span>
 
 	<!-- <p>This note has been hearted {{ note.hearts || 0 }} times.</p> -->
 </div>

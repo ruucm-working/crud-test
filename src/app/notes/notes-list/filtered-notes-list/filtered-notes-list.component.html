@@ -1,9 +1,10 @@
 <h1>filtered</h1>
+<hr>
 
 <button class="button" (click)="goBack()">뒤로가기</button>
 
 <div class="box" *ngFor="let note of notes | async">
 	<h3>{{ note.content }}</h3>
 	<p>{{ note.description }}</p>
-	<a class="tag is-info" *ngFor="let item of note.tag" [routerLink]="['/notes/filtered/', item]">{{ item }}</a>
+	<span class="tag is-info" *ngFor="let item of note.tag | keys">{{ item }}</span>
 </div>

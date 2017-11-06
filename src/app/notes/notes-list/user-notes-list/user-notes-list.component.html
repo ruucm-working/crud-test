@@ -1,0 +1,16 @@
+<h1>{{ userName }} 님의 인깨</h1>
+
+<hr>
+<button class="button" (click)="goBack()">뒤로가기</button>
+<div *ngFor="let note of notes | async">
+	<!-- <note-detail [note]="note"></note-detail> -->
+
+	<div class="box">
+		<div>
+			<h3>{{ note.content }}</h3>
+			<p>{{ note.description }}</p>
+
+			<span class="tag is-info" *ngFor="let item of note.tag | keys">{{ item }}</span>
+		</div>
+	</div>
+</div>

@@ -18,8 +18,10 @@ export class NoteService {
 	notesCollection2;
 	MyNotesCollection;
 	TagsCollection;
+	UserNotesCollection;
 	noteDocument: AngularFirestoreDocument < Node >
 		userName;
+	tag_datas;
 	constructor(
 		private afs: AngularFirestore,
 		public auth: AuthService
@@ -28,7 +30,11 @@ export class NoteService {
 		this.notesCollection = this.afs.collection('notes', ref => ref.orderBy('time', 'desc'))
 		this.MyNotesCollection = this.afs.collection('notes', ref => ref.where('userName', '==', this.userName).orderBy('time', 'desc'))
 		this.TagsCollection = this.afs.collection('Tags', ref => ref.orderBy('time', 'desc'))
-		// this.noteDocument = this.afs.doc('notes/mtp1Ll6caN4dVrhg8fWD');
+		this.TagsCollection.valueChanges().subscribe(
+			data => {
+				this.tag_datas = data;
+			}
+		);
 	}
 	getData(): Observable < Note[] > {
 		return this.notesCollection.valueChanges();
@@ -37,7 +43,6 @@ export class NoteService {
 		return this.TagsCollection.valueChanges();
 	}
 	getSnapshot() {
-		// ['added', 'modified', 'removed']
 		return this.notesCollection.snapshotChanges().map(actions => {
 			return actions.map(a => {
 				return { id: a.payload.doc.id, ...a.payload.doc.data() }
@@ -45,10 +50,16 @@ export class NoteService {
 		})
 	}
 	getFilteredSnapshot(tag) {
-		console.log('filtered : (tag) ');
-		console.log(tag);
-		this.notesCollection2 = this.afs.collection('notes', ref => ref.where('tag', '==', tag).orderBy('time', 'desc'))
+		this.notesCollection2 = this.afs.collection('notes', ref => ref.where('tag.' + tag, '==', true).orderBy('time', 'desc'))
 		return this.notesCollection2.snapshotChanges().map(actions => {
+			return actions.map(a => {
+				return { id: a.payload.doc.id, ...a.payload.doc.data() }
+			})
+		})
+	}
+	getUserNotesSnapshot(userName) {
+		this.UserNotesCollection = this.afs.collection('notes', ref => ref.where('userName', '==', userName).orderBy('time', 'desc'))
+		return this.UserNotesCollection.snapshotChanges().map(actions => {
 			return actions.map(a => {
 				return { id: a.payload.doc.id, ...a.payload.doc.data() }
 			})
@@ -77,12 +88,19 @@ export class NoteService {
 	}
 	saveTags(tags) {
 		for (var i = 0; i < tags.length; i++) {
-			const tag = {
-				name: tags[i],
-				time: new Date().getTime()
+			if (!this.TagDuplicated(tags[i])) {
+				const tag = {
+					name: tags[i],
+					time: new Date().getTime()
+				}
+				this.TagsCollection.add(tag);
 			}
-			this.TagsCollection.add(tag);
 		}
+	}
+	TagDuplicated(tag) {
+		var filt = this.tag_datas.find((ele) => { return ele.name == tag; })
+		if (filt) return true;
+		else return false;
 	}
 	updateNote(id, data) {
 		return this.getNote(id).update(data)

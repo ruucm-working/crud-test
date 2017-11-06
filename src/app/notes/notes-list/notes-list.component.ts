@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NoteService } from '../note.service';
+import { KeysPipe } from '../../shared/keys.pipe';
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/debounceTime';
 @Component({
@@ -24,7 +25,10 @@ export class NotesListComponent implements OnInit {
 		});
 	}
 	createNote() {
-		this.noteService.create(this.noteService.userName, this.content, this.description, this.tags)
+		console.log('this.tags : ');
+		console.log(this.tags);
+		var deNormTags = this.toObject(this.tags);
+		this.noteService.create(this.noteService.userName, this.content, this.description, deNormTags)
 		this.content = ''
 		this.description = ''
 		this.saveTags();
@@ -51,5 +55,13 @@ export class NotesListComponent implements OnInit {
 			res.push(data[i].name);
 		}
 		return res;
+	}
+	toObject(arr) {
+		var rv = {};
+		for (var i = 0; i < arr.length; ++i)
+			rv[arr[i]] = true;
+		console.log('rv : ');
+		console.log(rv);
+		return rv;
 	}
 }

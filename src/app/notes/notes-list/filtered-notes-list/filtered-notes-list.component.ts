@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { NoteService } from '../../note.service';
 import { Location } from '@angular/common';
+import { KeysPipe } from '../../../shared/keys.pipe';
 @Component({
 	selector: 'filtered-notes-list',
 	templateUrl: './filtered-notes-list.component.html',
@@ -22,11 +23,6 @@ export class FilteredNotesListComponent {
 			.map(params => params['Tag'])
 			.subscribe(Tag => {
 				this.Tag = Tag;
-				console.log('this.Tag : ');
-				console.log(this.Tag);
-				// this.formDbService.getPossibleRegion(this.Tag).valueChanges().subscribe(queriedItems => {
-				// 	this.possibleRegion = queriedItems;
-				// });
 			});
 		this.notes = this.noteService.getFilteredSnapshot(this.Tag);
 	}
